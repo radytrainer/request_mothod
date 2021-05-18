@@ -17,6 +17,24 @@ let users = [
 
 app.get('/api/users', (req, res) => res.send(users));
 
+app.get('/api/users/:id', (req, res) => {
+    let id = req.params.id;
+    let index = -1;
+    for (let user of users) {
+        if (user.id === parseInt(id)) {
+            index = user.id - 1;
+        }
+    }
+
+    if (index >= 0) {
+        let user = users[index];
+        res.send([user]);
+    }else {
+        res.status(404)
+        res.send({error: "User id not correct!"})
+    }
+});
+
 // POST Method
 app.post('/api/users', (req, res) => {
     if(!req.body.password) {
@@ -31,6 +49,7 @@ app.post('/api/users', (req, res) => {
     users.push(user);
     res.send(users);
 });
+
 
 // PUT Method
 
